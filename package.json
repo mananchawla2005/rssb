@@ -2,7 +2,7 @@
   "name": "RSSB-SEARCH-ENGINE",
   "version": "1.0.0",
   "description": "## Search Utility",
-  "main": "logic.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
