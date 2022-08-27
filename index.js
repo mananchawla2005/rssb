@@ -1,9 +1,23 @@
 const express = require('express');
 const path = require('path');
 const AWS = require("aws-sdk");
+var replaceStrings = ['HackTheBox - ', 'VulnHub - ', 'UHC - '];
+
+// const { match } = require('assert');
 const s3 = new AWS.S3();
 const app = express();
+app.use(express.urlencoded({
+    extended: true
+  }));
 const port = process.env.PORT || 8080;
+var dataset = null;
+(async() => {
+    let my_file = await s3.getObject({
+        Bucket: "cyclic-kind-ruby-calf-shoe-ap-south-1",
+        Key: "data.json",
+    }).promise()
+    dataset = JSON.parse(my_file.Body)
+})();
 function doSearch(match, dataset) {
     results = [];
 
@@ -44,13 +58,10 @@ function doSearch(match, dataset) {
     return results;
 }
 app.use(express.static('public'))
-app.get('/get', async function(req, res) {
-    let my_file = await s3.getObject({
-        Bucket: "cyclic-kind-ruby-calf-shoe-ap-south-1",
-        Key: "data.json",
-    }).promise()
-
-    console.log(JSON.parse(my_file.Body))
+app.post('/get', function(req, res) {
+    const match = req.body.value
+    const results = doSearch(match, dataset)
+    res.json(results)
 });
 
 app.listen(port);

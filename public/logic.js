@@ -135,16 +135,27 @@ document.addEventListener('DOMContentLoaded', function() {
     var currentSet = [];
     var oldSearchValue = '';
 
-    function doSearch(event) {
+    async function doSearch(event) {
         var val = searchValue.value;
 
         if (val != '') {
             controls.displayResults();
-            currentSet = window.dataset;
+            // currentSet = window.dataset;
             oldSearchValue = val;
-
-            currentSet = window.controls.doSearch(val, currentSet);
+            var data = new URLSearchParams()
+            data.append('value', val)
+            temp = await fetch('/get',             
+            {
+                method: 'post',
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+                body: data
+            })
+            currentSet = await temp.json()
             console.log(currentSet)
+            // currentSet = window.controls.doSearch(val, currentSet);
+            // console.log(currentSet)
             if (currentSet.length < totalLimit) window.controls.setColor(colorUpdate, currentSet.length == 0 ? 'no-results' : 'results-found');
 
             window.controls.updateResults(resultsTable, currentSet);
