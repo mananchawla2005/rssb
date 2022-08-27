@@ -153,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: data
             })
             currentSet = await temp.json()
-            console.log(currentSet)
             // currentSet = window.controls.doSearch(val, currentSet);
             // console.log(currentSet)
             if (currentSet.length < totalLimit) window.controls.setColor(colorUpdate, currentSet.length == 0 ? 'no-results' : 'results-found');
