@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-
+const AWS = require("aws-sdk");
+const s3 = new AWS.S3();
 const app = express();
 const port = process.env.PORT || 8080;
 function doSearch(match, dataset) {
@@ -43,8 +44,13 @@ function doSearch(match, dataset) {
     return results;
 }
 app.use(express.static('public'))
-app.get('/', function(req, res) {
+app.get('/get', async function(req, res) {
+    let my_file = await s3.getObject({
+        Bucket: "cyclic-kind-ruby-calf-shoe-ap-south-1",
+        Key: "data.json",
+    }).promise()
 
+    console.log(JSON.parse(my_file.Body))
 });
 
 app.listen(port);

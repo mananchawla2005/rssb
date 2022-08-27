@@ -5,3 +5,5 @@ node_modules/
 .vscode/
 CNAME/
 style.scss
+aws.js
+dataset.json
