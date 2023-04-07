@@ -1,0 +1,44 @@
+---
+name: "Update Data Automatically"
+on:
+  schedule:
+    - cron: '0 0  15 * *'
+
+jobs:
+  python-job:
+    name: "Python job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run python script
+        run: python yt_crawl.py -a $API_KEY
+      - name: Upload file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: job-result
+          path: dataset.json
+  node-job:
+    name: "Node job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-node@v2.5.2
+        with:
+          node-version: '18.14.2'
+      - name: Install dependencies
+        run: npm ci
+      - name: Download file as artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: job-result
+      - name: Run python script
+        run: node aws.js
