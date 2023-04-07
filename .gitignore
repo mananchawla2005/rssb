@@ -8,3 +8,5 @@ style.scss
 aws.js
 dataset.json
 public/dataset.json
+env/
+.env

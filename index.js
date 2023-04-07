@@ -13,8 +13,8 @@ const port = process.env.PORT || 8080;
 var dataset = null;
 (async() => {
     let my_file = await s3.getObject({
-        Bucket: "cyclic-kind-ruby-calf-shoe-ap-south-1",
-        Key: "data.json",
+        Bucket: process.env.BUCKET_NAME,
+        Key: "datanew.json",
     }).promise()
     dataset = JSON.parse(my_file.Body)
 })();
